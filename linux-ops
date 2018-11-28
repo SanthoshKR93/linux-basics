@@ -1,0 +1,466 @@
+command-line
+************
+commands -ls,echo,mkdir,cd,man,pwd,cat,date,S.O redirection(>),ls -l,mv,rm,cp,ls -a
+***********************************************************************************
+ls- shows the list of directories and files in the current directory. 
+
+echo- it is used to print the dialogs to the screen.
+
+mkdir- used to create new directory.
+
+cd- change directory command is used to change from one directory to another. Specifying the name of directory to go to after the command cd moves the user to that particular directory
+
+man- man command is the manual command which familiarizes the user to commands.man command accompanied with the command name tells us about the command.
+
+pwd- it shows the current directory location.
+
+cat- it is the command used to display the contents of a file on the screen.
+
+date- date command shows the current date and time.
+
+Standard Output redirection > - this is used to store the output or the value on left side of '>' the the file mentioned on the right side.
+date > abc means the date info is stored to file abc rather than displaying it on terminal command line as an output. the commands which run infinitely ie. yes without any conditions prints y continuously.
+y > /dev/null redirects the output to null file. this makes the commandline busy till the process is finished. to run this process on background and make commandline available for use while the process is running can be done by accompanying the redirection with an '&' sign.
+
+ls -l -this command shows more details of the files listed in the current directory.
+
+mv- this command is used to move (or rename files) from one location to another.
+
+rm-command used to remove files.
+
+cp- this command is used to copy files from one location to another.
+
+ls -a- this command displays all the files starting with '.'
+
+commands - grep,sed,sort
+************************
+grep- grep displays all lines containing specified pattern 
+      grep <pattern> <filename> 
+      <'^pattern'>-starts with pattern
+      <'pattern$'>-ending with pattern
+      <'^pattern$'>-starts and ends ie. the word to find is 'pattern'
+      <'^pa....n$'>-missing letters can be any characters that are present in the file which we    are searching on
+      <'^pat.*n$'> * is closure operator.
+
+sed- it performs pattern matching and replacement.
+     sed -i 's/pattern1/pattern2/g' <filename>
+     -i retains the output of the command in the file.
+     -s substitutes the first pattern with the second pattern.
+     -g using the global command with sed replaces all the occurances of the first pattern in the file instead of replacing  the first         occurance.
+     it searchs for occurances of pattern1 all over the file and replaces the found pattern1's with pattern2.
+
+sort- this command helps to sort patterns in a file in dictionary order.
+
+head- it shows the first few lines of a large file.
+      head -number(any number) <filename> -shows number of lines specified.
+tail- it shows last few commands of a large file.
+      tail -f <filename> -where -f helps to monitor data appending to the file in real time.
+
+
+pipes
+*****
+ps- process status
+ps ax -shows all processes executing on the system. 
+ps ax | wc -l shows count of all processes running.
+
+where wc- is for word count.
+      wc -l is count of the number of lines.
+the output of the commands on lhs of the pipe is fed as input to the command on rhs of the pipe.
+
+important files
+***************
+/dev/sda1-it is the thumbdrive partition
+/dev/zero-it is a magical file which is full of zeroes ie. any number of zeroes can be read using the file /dev/zero.
+/dev/null- it is a magical file where anything/data that has been saved to /dev/null vanishes.
+
+
+
+commands - ln,dd,xargs,tee,touch
+********************************
+
+ordinary link or hard link
+**************************
+ln- it is the command for linking or link.
+    it seems like copy command but actually the file is not copied ie. extra memory is not allocated for the new file instead a link is created in the new name through which we can access the value of the first file.
+    ln <filename1> <filename2>
+*hard links cannot be created for directories.
+
+Soft link or symbolic link
+**************************
+ln -s <fname1> <fname2>
+where -s is for creating the symbolic or soft link.
+here fname1 is linked using the symbolic link fname2
+*directories can be linked using symbolic links.
+
+dd- it is used for doing special copy operations.
+dd if=<filename1>  of=<filename2> bs=<block size> count=<number of blocks>
+
+then do an ls -l <filename2> for seeing the changes made.
+
+
+xargs- xargs command is used to get input from the user through command line and use it as command line arguement with the command given with it.
+xargs ls on hitting enter allows the user to input comands.
+the command input is read by xargs and provides it as command line arguement for ls command in this case.
+
+xargs can be efficiently used with pipes where xargs take the input from the output of the pipes.
+echo -l | xargs ls
+it is equivalent to 'ls -l'
+
+tee- the tee command reads data from either the command line or from input provided by a pipe and it displays the output as well as saves it inside the file specified.
+echo hello | tee abc
+the input from pipe is displayed as well as stored in the file abc in this case. 
+
+
+touch- the touch command creates zero byte files in the current directory ofthe names specified.
+touch <f1> <f2> <f3> f4> ...
+
+
+Mount and Unmount
+*****************
+
+mount command mounts the thumb drive's primary partition  to the system
+typing in mount command while thumb drive is plugged in shows the file assosiation 
+/dev/sda1 on <folder name>
+where the folder above is used to access the files from thumbdrive.
+unmount command unmounts the thumdrive from system ie. it disables the file assosiation 
+umount <folder name>
+unmounts the thumbdrive
+now it can be mount again by using mount command, this time use a new folder for file assosiation 
+mount /dev/sda1 test
+now the partition of the thumbdrive can be accessed through the folder 'test'.
+
+File Permissions
+****************
+doing ls -l <filename>
+shows the permission details of the file 
+there are 10 bits 
+_rw_rw_r__
+first bit is blank because it is a file and not a directory if it is a directory, it will be 'd'.
+the next 9 bits shows permission details
+split it into set of 3 bits
+first bit is read [r] second bit is write [w] third bit is execute [x]
+first set is the user permissions -[u]
+Second set is group permissions   -[g]
+third set is others permission    -[o]
+
+The permissions can be altered using the change mode command [chmod].
+The plus [+] and minus [-] signs tells us to add or remove permissions.
+using chmod +r/w/x adds permissions for all so inorder to give permissions individually, use the name of the set u,g or o.
+chmod [[u]/[g]/[o]] [[+]/[-]] [[r]/[w]/[x]] <filename>
+
+ 
+Process Handling
+****************
+
+The program that has started execution/running is called a process.
+ps ax shows the process list
+every process has a process id 
+the first process on all linux system is 'init' 
+status column shows status of processes
+
+R -running  
+S -sleeping
+T -suspended temporarily
+
+
+process id pid can be used to do operations on processes
+kill command can be used to kill the processes 
+kill <pid> 
+kils the process having the given pid.
+top command gives a real time process status.
+free command shows the details about memory.
+
+ctrl-z -> to suspend the process
+fg -> to run the process on foreground which makes it active again.
+in case of more background processes, we can use fg1 for first one and fg2 for second and so on. 
+
+
+tar and gzip
+************
+
+gzip - the gzip command compresses the file and adds an extension og '.gz'.
+gzip <filename>  creates <filename.gz>
+gunzip - the gunzip command unzips the file and gives us back the actual file.
+gunzip <filename.gz> gives <filename> 
+
+tar - the tar command helps us to create .tar archieve of a file.
+tar cvf <filename.tar> <filename>  creates <filename.tar>
+consider 'c' in 'cvf' as 'create'
+to get back the original file back, 
+tar xvf <filename.tar> which gives the original file back.
+consider 'x' in 'xvf' as 'extract'.
+
+the .tar file can be compressed using gzip command which can be done in one step by using the command 
+tar cvfz <filename.tgz> <filename>  which creates <filename.tgz>
+to get back the actual file, we can use the command 
+tar xvf <filename.tgz> which gives back the actual file.
+
+bzip2
+*****
+the bzip2 command provides much better compression rates for much larger files.
+
+
+
+The C Compilation process
+*************************
+
+in linux, the command to compile a c program is 
+cc <filename.c>
+now doing an ls lists the files which include a file called 'a.out' that contains executable machine code corresponding to the c file.
+
+There are 4 stages to the compilation process
+
+*first stage- preprocessing 
+ ->   cc -E <filename.c>
+ this replaces the variable names with the values defined for all variables in the code.
+
+*second stage- Compilation/Compiler Proper 
+ ->   cc -S <filename.c>
+ this creates a <filename.s> file which contains the assembly language code.
+
+*Third stage- Assembling
+ ->   cc -C <filename.c>
+ this creates a <filename.o> file which contains the machine code converted from assembly language by assembler which looks like gibberish to human eye.
+
+*Fourth Stage- Linking
+ ->   it is done by program called linker which combines the machine code from assembling stage with some library functions and generates the final file a.out.
+
+the 4 stages happen in sequence once we give the command cc <filename.c> to the command line.
+
+
+Linux File System
+*****************
+
+bin,etc,sbin,boot,dev,proc,usr,home,lib
+
+* /bin --- contains machine code of some important programs in the system.
+           eg:kill,ls etc
+
+* /etc --- contains the configuration files which are plain text files that are crucial to the working of many programs 
+
+* /sbin --- /sbin is similar to /bin
+            the only difference is sbin contains machine code of programs that are ony executed by the super user.
+            eg: partition, shutdown etc
+
+* /boot --- contains the machine code of operating system kernel.
+
+* /dev --- contains the special files ie we are accessing some peripheral device.
+  eg: /dev/null
+      /dev/zero  
+      /dev/sda1
+
+* /proc --- contains files holding information regarding 
+            # your machine's hardware
+            # operating system data structures
+            # processes running on the system
+
+* /usr --- contains folders like include which has the .h files used in programs.it also contains a bin and sbin.
+
+* /home --- contains login directories of all users.
+
+* /lib --- contains the library file.
+           eg: printf scanf their machine codes are present in this directory.
+
+
+Debugging with GDB
+******************
+
+->using gdb, we need to compile the code with -g 
+
+->cc -g <filename.c>
+
+->gdb ./a.out
+
+->once gdb starts, enter 'break main'
+
+->then enter 'run'
+
+->this breaks on all break points 
+
+->move through break points,line by line type in 'n'. to move step by step in case of function, then type in 's'
+
+->exit GDB by entering 'quit'.
+
+
+Git basics
+**********
+
+->git config --global user.name "name"
+
+->git config --global user.email "email@abc.com"
+
+->do an ls -a to see .gitconfig file listed.
+
+->cat .gitconfig to see the content ie. the name and email id used for git.
+
+git branch shows all the branches.
+
+
+create a git repo:
+------------------
+->mkdir project
+
+->cd project 
+
+->git init 
+
+->create the file 
+  vi filename.c
+  after creating the file and entering the contents.
+
+->git add filename.c
+
+->git commit -m "first commit"
+
+->now change the contents of the file created and save changes.
+  git add filename.c newfilename.c
+  git commit -m "Second commit"
+
+->to get the previous contents back do
+  git show master~1:filename.c
+
+->log - it shows all the commits.
+
+create new branch:
+------------------
+
+->git checkout -b experimental
+  -b for new branch
+
+->now we have changed to branch experimental from branch master.
+
+->create files on experimental branch and do an 'ls'
+  all the files of both master and experimental will be present
+
+->now move to branch master
+  git checkout master
+
+->now do an 'ls'
+  we can see only the files created on branch master.
+
+merge branches:
+---------------
+->staying on master branch, type in
+  git merge experimental
+
+->it merges both branches.
+
+
+deleting a branch:
+------------------
+
+->to delete a branch,
+  git branch -d experimental
+  -d for deletion of branch.
+
+
+Creating a github account
+*************************
+
+-> go to github.com website 
+
+-> signup using email.
+
+
+Add ssh key:
+------------
+
+->go to ssh keys option in the website and click on add key option
+  enter a key name and the key to be entered next must be obtained from the local machine.
+
+->type in 
+  ssh-keygen -t rsa -C "emailid"
+
+->hit enter till the key is generated.
+
+->.ssh folder will be created and in that folder there will be a id_rsa.pub file.
+
+->view the contents of that file. that will be our ssh key that has to be entered in the website github.com.
+
+->copy and paste the contents.
+
+->save the key.
+
+
+creating a repo and pushing files from local machine to github.com
+------------------------------------------------------------------
+
+->create a repo named 'test' in the website.
+
+->go to the local machine command line and create a folder
+
+->mkdir test
+
+->cd test
+
+->git init      #initialize git on that folder.
+
+->vi a.c        #create a file a.c amd add contents.
+
+->git add a.c   
+
+->git commit -m "first commit" #after adding the file to git, commit and then set the remote origin.
+
+->git remote add origin git@github.com:<username>/test.git  #set remote origin
+
+->git push -u origin master  #pushing the file to github.com
+
+
+Shell Basics
+************
+
+VI Editor
+*********
+
+2 modes of operation
+
+->command mode
+
+->editing mode
+
+'a' to change from command mode to editing mode.
+esc key to switch to command mode from editing mode. 
+
+del-------------to del contents
+:w--------------save
+:wq-------------save and quit
+:q!-------------quit without saving
+:set nu---------for seting line numbers
+:set nonu-------for removing line numbers
+shift+g---------move to end of line
+num+shift+g-----move to a particular line
+dd--------------cut-del
+p---------------paste
+yy--------------copy
+u---------------undo
+:e <filename>---new file without leaving vi editor.
+:e <filename>---to switch between files created without moving out of vi editor.
+<num1>,<num2>d--cut-del lines from <num1>to<num2>
+
+
+file to set line numbers
+------------------------
+
+-> on root directory, create a file '.exrc'
+-> type in 
+   set nu
+-> save. Now we can see line numbers when we open vi editor without typing in 'set nu' each time.
+
+
+CTAGS
+*****
+
+large projects contain many many files since languages like c, java etc have programs which are written as collection of files.
+ie. for eg a function might be declared on one file and the body of the function might be on other.
+To see the function definition we use ctags.
+
+-> ctags *.c
+
+-> a file 'tags' will be created.
+
+-> now go to the file having the function declaration 
+   click 'ctrl + ]'
+   function definition opens up
+
+-> click 'ctrl + t' 
+   the file containing the function declaration is shown.
